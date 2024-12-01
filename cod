@@ -1,0 +1,132 @@
+import javax.swing.*;
+import java.util.ArrayList;
+
+public class GerenciadorDeTarefas {
+
+    // Lista para armazenar as tarefas
+    private static ArrayList<String> tarefas = new ArrayList<>();
+
+    public static void main(String[] args) {
+        // Laço de repetição para o menu principal
+        while (true) {
+            // Exibe o menu de opções
+            String opcao = JOptionPane.showInputDialog(
+                    null,
+                    "Selecione uma opção:\n\n" +
+                            "1. Adicionar tarefa\n" +
+                            "2. Marcar tarefa como concluída\n" +
+                            "3. Remover tarefa\n" +
+                            "4. Exibir todas as tarefas\n" +
+                            "5. Sair",
+                    "Gerenciador de Tarefas",
+                    JOptionPane.PLAIN_MESSAGE
+            );
+
+            // Se o usuário clicar em "Cancelar" ou fechar a janela, o programa encerra
+            if (opcao == null) {
+                break;
+            }
+
+            // Controle do fluxo de acordo com a opção escolhida
+            switch (opcao) {
+                case "1":
+                    adicionarTarefa();
+                    break;
+                case "2":
+                    marcarConcluida();
+                    break;
+                case "3":
+                    removerTarefa();
+                    break;
+                case "4":
+                    exibirTarefas();
+                    break;
+                case "5":
+                    JOptionPane.showMessageDialog(null, "Saindo do programa...");
+                    return; // Encerra o programa
+                default:
+                    JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+            }
+        }
+    }
+
+    // Método para adicionar uma nova tarefa
+    private static void adicionarTarefa() {
+        String tarefa = JOptionPane.showInputDialog("Digite a nova tarefa:");
+
+        if (tarefa != null && !tarefa.trim().isEmpty()) {
+            tarefas.add(tarefa); // Adiciona a tarefa à lista
+            JOptionPane.showMessageDialog(null, "Tarefa adicionada com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Tarefa não pode ser vazia.");
+        }
+    }
+
+    // Método para marcar uma tarefa como concluída
+    private static void marcarConcluida() {
+        if (tarefas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há tarefas para marcar como concluída.");
+            return;
+        }
+
+        // Exibe a lista de tarefas para o usuário selecionar uma
+        String[] tarefasArray = tarefas.toArray(new String[0]);
+        String tarefaSelecionada = (String) JOptionPane.showInputDialog(
+                null,
+                "Selecione a tarefa para marcar como concluída:",
+                "Marcar Tarefa Como Concluída",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                tarefasArray,
+                tarefasArray[0]
+        );
+
+        if (tarefaSelecionada != null) {
+            // Modifica a tarefa para indicar que foi concluída
+            int index = tarefas.indexOf(tarefaSelecionada);
+            tarefas.set(index, tarefaSelecionada + " (Concluída)");
+            JOptionPane.showMessageDialog(null, "Tarefa marcada como concluída!");
+        }
+    }
+
+    // Método para remover uma tarefa
+    private static void removerTarefa() {
+        if (tarefas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há tarefas para remover.");
+            return;
+        }
+
+        // Exibe a lista de tarefas para o usuário escolher uma
+        String[] tarefasArray = tarefas.toArray(new String[0]);
+        String tarefaSelecionada = (String) JOptionPane.showInputDialog(
+                null,
+                "Selecione a tarefa para remover:",
+                "Remover Tarefa",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                tarefasArray,
+                tarefasArray[0]
+        );
+
+        if (tarefaSelecionada != null) {
+            tarefas.remove(tarefaSelecionada); // Remove a tarefa selecionada
+            JOptionPane.showMessageDialog(null, "Tarefa removida com sucesso!");
+        }
+    }
+
+    // Método para exibir todas as tarefas
+    private static void exibirTarefas() {
+        if (tarefas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há tarefas cadastradas.");
+            return;
+        }
+
+        // Exibe a lista de tarefas
+        StringBuilder listaTarefas = new StringBuilder("Tarefas atuais:\n\n");
+        for (int i = 0; i < tarefas.size(); i++) {
+            listaTarefas.append(i + 1).append(". ").append(tarefas.get(i)).append("\n");
+        }
+
+        JOptionPane.showMessageDialog(null, listaTarefas.toString());
+    }
+}
